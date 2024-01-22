@@ -6,7 +6,7 @@ namespace ReactiveUITreeview;
 /// <summary>
 /// Pet.
 /// </summary>
-/// <seealso cref="ReactiveUITreeview.ReactiveTreeItem" />
+/// <seealso cref="ReactiveTreeItem" />
 public class Pet(string? name) : ReactiveTreeItem
 {
     /// <summary>

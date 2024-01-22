@@ -6,7 +6,7 @@ namespace ReactiveUITreeview;
 /// <summary>
 /// Person.
 /// </summary>
-/// <seealso cref="ReactiveUITreeview.ReactiveTreeItem" />
+/// <seealso cref="ReactiveTreeItem" />
 public class Person(string? name, IEnumerable<ReactiveTreeItem>? children = null)
     : ReactiveTreeItem(children)
 {

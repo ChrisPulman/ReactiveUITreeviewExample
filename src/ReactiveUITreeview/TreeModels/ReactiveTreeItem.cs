@@ -9,7 +9,7 @@ namespace ReactiveUITreeview;
 /// <summary>
 /// Reactive Tree Item.
 /// </summary>
-/// <seealso cref="ReactiveUI.ReactiveObject" />
+/// <seealso cref="ReactiveObject" />
 public abstract class ReactiveTreeItem : ReactiveObject
 {
     private ReactiveTreeItem? _parent;
@@ -22,7 +22,7 @@ public abstract class ReactiveTreeItem : ReactiveObject
     /// <param name="children">The children.</param>
     protected ReactiveTreeItem(IEnumerable<ReactiveTreeItem>? children = null)
     {
-        Children = new ReactiveList<ReactiveTreeItem>();
+        Children = new();
         if (children == null)
         {
             return;
@@ -83,6 +83,11 @@ public abstract class ReactiveTreeItem : ReactiveObject
         child._parent = this;
         Children.Add(child);
     }
+
+    /// <summary>
+    /// Removes the selected child and its children.
+    /// </summary>
+    public void RemoveChild() => _parent?.Children.Remove(this);
 
     /// <summary>
     /// Expands the path.
