@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Reactive;
+using System.Reactive.Linq;
 using CP.Reactive;
 using ReactiveUI;
 
@@ -10,12 +11,14 @@ namespace ReactiveUITreeview;
 /// <summary>
 /// MainWindowViewModel.
 /// </summary>
-/// <seealso cref="ReactiveUI.ReactiveObject" />
+/// <seealso cref="ReactiveObject" />
 public class MainWindowViewModel : ReactiveObject
 {
     private ReactiveTreeItem? _selectedItem;
     private string? _newName;
     private string? _petName;
+    private string? _selectedElement;
+    private string? _lastSelectedElement;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
@@ -28,7 +31,7 @@ public class MainWindowViewModel : ReactiveObject
         var clarence = new Person("Clarence", new[] { clarencePulman });
         Family = new ReactiveList<ReactiveTreeItem>([clifford, clarence]);
 
-        AddPerson = ReactiveCommand.Create<object>(_ => { });
+        AddPerson = ReactiveCommand.Create(() => { });
         AddPerson.Subscribe(_ =>
         {
             if (SelectedItem == null)
@@ -41,7 +44,7 @@ public class MainWindowViewModel : ReactiveObject
             p.IsSelected = true;
             p.ExpandPath();
         });
-        AddPet = ReactiveCommand.Create<object>(_ => { });
+        AddPet = ReactiveCommand.Create(() => { });
         AddPet.Subscribe(_ =>
         {
             if (SelectedItem == null)
@@ -54,10 +57,39 @@ public class MainWindowViewModel : ReactiveObject
             p.IsSelected = true;
             p.ExpandPath();
         });
-        Collapse = ReactiveCommand.Create<object>(_ => { });
+        Collapse = ReactiveCommand.Create(() => { });
         Collapse.Subscribe(_ => SelectedItem?.CollapsePath());
-        Expand = ReactiveCommand.Create<object>(_ => { });
+        Expand = ReactiveCommand.Create(() => { });
         Expand.Subscribe(_ => SelectedItem?.ExpandPath());
+        Remove = ReactiveCommand.Create(() => { });
+        Remove.Subscribe(_ => SelectedItem?.RemoveChild());
+        var isAnimalOrPerson = Family.CurrentItems.FlattenAndSelect(
+            rti =>
+            {
+                if (rti is Person person)
+                {
+                    return rti.WhenAnyValue(vs => vs.IsSelected).Select(x => (x, person.Name));
+                }
+                else if (rti is Pet pet)
+                {
+                    return rti.WhenAnyValue(vs => vs.IsSelected).Select(x => (x, pet.Name));
+                }
+                else
+                {
+                    return rti.WhenAnyValue(vs => vs.IsSelected).Select(x => (x, (string?)"NoName"));
+                }
+            });
+        isAnimalOrPerson.Subscribe(x =>
+        {
+            if (x.x)
+            {
+                SelectedElement = x.Item2;
+            }
+            else
+            {
+                LastSelectedElement = x.Item2;
+            }
+        });
     }
 
     /// <summary>
@@ -74,7 +106,7 @@ public class MainWindowViewModel : ReactiveObject
     /// <value>
     /// The add person.
     /// </value>
-    public ReactiveCommand<object, Unit> AddPerson { get; }
+    public ReactiveCommand<Unit, Unit> AddPerson { get; }
 
     /// <summary>
     /// Gets the add pet.
@@ -82,7 +114,15 @@ public class MainWindowViewModel : ReactiveObject
     /// <value>
     /// The add pet.
     /// </value>
-    public ReactiveCommand<object, Unit> AddPet { get; }
+    public ReactiveCommand<Unit, Unit> AddPet { get; }
+
+    /// <summary>
+    /// Gets the remove.
+    /// </summary>
+    /// <value>
+    /// The remove.
+    /// </value>
+    public ReactiveCommand<Unit, Unit> Remove { get; }
 
     /// <summary>
     /// Gets the collapse.
@@ -90,7 +130,7 @@ public class MainWindowViewModel : ReactiveObject
     /// <value>
     /// The collapse.
     /// </value>
-    public ReactiveCommand<object, Unit> Collapse { get; }
+    public ReactiveCommand<Unit, Unit> Collapse { get; }
 
     /// <summary>
     /// Gets the expand.
@@ -98,7 +138,7 @@ public class MainWindowViewModel : ReactiveObject
     /// <value>
     /// The expand.
     /// </value>
-    public ReactiveCommand<object, Unit> Expand { get; }
+    public ReactiveCommand<Unit, Unit> Expand { get; }
 
     /// <summary>
     /// Gets or sets creates new name.
@@ -122,6 +162,30 @@ public class MainWindowViewModel : ReactiveObject
     {
         get => _petName;
         set => this.RaiseAndSetIfChanged(ref _petName, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the selected element.
+    /// </summary>
+    /// <value>
+    /// The selected element.
+    /// </value>
+    public string? SelectedElement
+    {
+        get => _selectedElement;
+        set => this.RaiseAndSetIfChanged(ref _selectedElement, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the last selected element.
+    /// </summary>
+    /// <value>
+    /// The last selected element.
+    /// </value>
+    public string? LastSelectedElement
+    {
+        get => _lastSelectedElement;
+        set => this.RaiseAndSetIfChanged(ref _lastSelectedElement, value);
     }
 
     /// <summary>

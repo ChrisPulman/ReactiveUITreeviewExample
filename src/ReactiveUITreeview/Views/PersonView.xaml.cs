@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Chris Pulman. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Reactive.Disposables;
 using System.Windows;
 using ReactiveUI;
 
@@ -23,7 +24,7 @@ public partial class PersonView : IViewFor<Person>
     public PersonView()
     {
         InitializeComponent();
-        this.OneWayBind(ViewModel, vm => vm.Name, v => v.PersonName.Text);
+        this.WhenActivated(d => this.OneWayBind(ViewModel, vm => vm.Name, v => v.PersonName.Text).DisposeWith(d));
     }
 
     /// <summary>

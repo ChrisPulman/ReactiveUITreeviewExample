@@ -32,6 +32,11 @@
                 <TextBox Name="PetName" Width="200" />
             </StackPanel>
             <Button
+                Name="Remove"
+                Width="80"
+                HorizontalAlignment="Left"
+                Content="Remove" />
+            <Button
                 Name="Collapse"
                 Width="80"
                 HorizontalAlignment="Left"
@@ -41,17 +46,21 @@
                 Width="80"
                 HorizontalAlignment="Left"
                 Content="Expand" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="110" Text="SelectedName" />
+                <TextBlock
+                    Name="Selected"
+                    Width="200"
+                    Margin="10,0,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="110" Text="LastSelectedName" />
+                <TextBlock
+                    Name="LastSelected"
+                    Width="200"
+                    Margin="10,0,0,0" />
+            </StackPanel>
         </StackPanel>
-        <TreeView Name="FamilyTree" Grid.Column="1">
-            <TreeView.Resources>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                </Style>
-                <HierarchicalDataTemplate DataType="{x:Type local:ReactiveTreeItem}" ItemsSource="{Binding Children.Items}">
-                    <reactiveUi:ViewModelViewHost ViewModel="{Binding ViewModel}" />
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>
-        </TreeView>
+        <local:ReactiveTreeView x:Name="FamilyTree" Grid.Column="1" />
     </Grid>
 </Window>
