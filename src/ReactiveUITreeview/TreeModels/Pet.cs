@@ -1,21 +1,21 @@
 ﻿// Copyright (c) Chris Pulman. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using CrissCross.WPF.UI.Controls;
+
 namespace ReactiveUITreeview;
 
 /// <summary>
 /// Pet.
 /// </summary>
 /// <seealso cref="ReactiveTreeItem" />
-public class Pet(string? name) : ReactiveTreeItem
+public class Pet : ReactiveTreeItem
 {
     /// <summary>
-    /// Gets the name.
+    /// Initializes a new instance of the <see cref="Pet"/> class.
     /// </summary>
-    /// <value>
-    /// The name.
-    /// </value>
-    public string? Name { get; } = name;
+    /// <param name="name">The name.</param>
+    public Pet(string? name) => DisplayName = name;
 
     /// <summary>
     /// Gets the view model.

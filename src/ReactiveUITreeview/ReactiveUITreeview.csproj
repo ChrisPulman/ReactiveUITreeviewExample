@@ -11,8 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ReactiveList" Version="2.2.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="20.3.1" />
+    <PackageReference Include="CrissCross.WPF.UI" Version="2.5.0" />
   </ItemGroup>
 
 </Project>

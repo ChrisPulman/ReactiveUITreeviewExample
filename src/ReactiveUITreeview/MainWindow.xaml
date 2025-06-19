@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:ReactiveUITreeview"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:ui="https://github.com/reactivemarbles/CrissCross.ui"
     Title="ReactiveUI Treeview Example"
     Width="800"
     Height="450"
@@ -61,6 +62,6 @@
                     Margin="10,0,0,0" />
             </StackPanel>
         </StackPanel>
-        <local:ReactiveTreeView x:Name="FamilyTree" Grid.Column="1" />
+        <ui:ReactiveTreeView x:Name="FamilyTree" Grid.Column="1" />
     </Grid>
 </Window>

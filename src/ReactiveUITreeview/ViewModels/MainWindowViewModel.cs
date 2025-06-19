@@ -4,6 +4,7 @@
 using System.Reactive;
 using System.Reactive.Linq;
 using CP.Reactive;
+using CrissCross.WPF.UI.Controls;
 using ReactiveUI;
 
 namespace ReactiveUITreeview;
@@ -25,10 +26,10 @@ public class MainWindowViewModel : ReactiveObject
     /// </summary>
     public MainWindowViewModel()
     {
-        var cliffordPulman = new Person("Clifford Pulman", new[] { new Pet("Kitty") });
-        var clifford = new Person("Clifford", new[] { cliffordPulman });
+        var cliffordPulman = new Person("Clifford Pulman", [new Pet("Kitty")]);
+        var clifford = new Person("Clifford", [cliffordPulman]);
         var clarencePulman = new Person("Clarence Pulman");
-        var clarence = new Person("Clarence", new[] { clarencePulman });
+        var clarence = new Person("Clarence", [clarencePulman]);
         Family = new ReactiveList<ReactiveTreeItem>([clifford, clarence]);
 
         AddPerson = ReactiveCommand.Create(() => { });
@@ -68,11 +69,11 @@ public class MainWindowViewModel : ReactiveObject
             {
                 if (rti is Person person)
                 {
-                    return rti.WhenAnyValue(vs => vs.IsSelected).Select(x => (x, person.Name));
+                    return rti.WhenAnyValue(vs => vs.IsSelected).Select(x => (x, person.DisplayName));
                 }
                 else if (rti is Pet pet)
                 {
-                    return rti.WhenAnyValue(vs => vs.IsSelected).Select(x => (x, pet.Name));
+                    return rti.WhenAnyValue(vs => vs.IsSelected).Select(x => (x, pet.DisplayName));
                 }
                 else
                 {
