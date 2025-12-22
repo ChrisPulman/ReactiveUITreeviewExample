@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CrissCross.WPF.UI" Version="2.6.22" />
+    <PackageReference Include="CrissCross.WPF.UI" Version="2.6.55" />
   </ItemGroup>
 
 </Project>
